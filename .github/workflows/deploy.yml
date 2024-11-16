@@ -3,7 +3,7 @@ name: Deploy to Elastic Beanstalk
 on:
   push:
     branches:
-      - master  # Branch que dispara o deploy (altere para a sua branch principal, se necessário)
+      - master  # Substitua pela branch que dispara o deploy
 
 jobs:
   deploy:
@@ -13,24 +13,23 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v3
       with:
-        node-version: '18' # Altere para a versão do Node.js que você está usando
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
 
-    - name: Install dependencies and build project
+    - name: Zip application
+      run: zip -r application.zip .
+
+    - name: Upload to Elastic Beanstalk
       run: |
-        npm install
-        npm run build
-
-    - name: Package and deploy to Elastic Beanstalk
-      uses: einaregilsson/beanstalk-deploy@v20
-      with:
-        application_name: "glowupbackend"         # Nome da aplicação no Elastic Beanstalk
-        environment_name: "glowupbackend-prod"            # Nome do ambiente no Elastic Beanstalk
-        aws-access-key-id: ASIA3XF7UZAYSIZBPYNX
-        aws-secret-access-key: anEANmVQpA8wePVPRyVb1W+1jwXRhQM9VtAT7xsQ
-        version_label: "v${{ github.run_id }}"    # Rótulo da versão do deploy
-        region: us-east-1
-    - name: Create ZIP file
-      run: zip -r backend.zip dist package.json package-lock.json
+        aws elasticbeanstalk create-application-version \
+          --application-name "glowupbackend" \
+          --version-label "v-${{ github.run_id }}" \
+          --source-bundle S3Bucket="elasticbeanstalk-us-east-1-805708286001",S3Key="application.zip"
+        aws elasticbeanstalk update-environment \
+          --application-name "glowupbackend" \
+          --environment-name "glowupbackend-prod" \
+          --version-label "v-${{ github.run_id }}"
