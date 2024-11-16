@@ -6,7 +6,7 @@ on:
       - master  # Substitua pela branch que dispara o deploy
       
 env:
-  AWS_REGION: ${{ env.AWS_REGION }}   
+  AWS_REGION: us-east-1  
 permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read  
