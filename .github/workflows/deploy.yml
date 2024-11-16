@@ -28,9 +28,9 @@ jobs:
       with:
         application_name: "glowupbackend"         # Nome da aplicação no Elastic Beanstalk
         environment_name: "glowupbackend-prod"            # Nome do ambiente no Elastic Beanstalk
-        region: ${{ secrets.AWS_REGION }}
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         version_label: "v${{ github.run_id }}"    # Rótulo da versão do deploy
+        region: us-east-1
     - name: Create ZIP file
       run: zip -r backend.zip dist package.json package-lock.json
