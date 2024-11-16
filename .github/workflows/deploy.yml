@@ -3,7 +3,7 @@ name: Deploy to Elastic Beanstalk
 on:
   push:
     branches:
-      - main  # Branch que dispara o deploy (altere para a sua branch principal, se necessário)
+      - master  # Branch que dispara o deploy (altere para a sua branch principal, se necessário)
 
 jobs:
   deploy:
