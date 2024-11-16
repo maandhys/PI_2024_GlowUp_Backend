@@ -28,8 +28,8 @@ jobs:
       with:
         application_name: "glowupbackend"         # Nome da aplicação no Elastic Beanstalk
         environment_name: "glowupbackend-prod"            # Nome do ambiente no Elastic Beanstalk
-        aws_access_key: ASIA3XF7UZAYSIZBPYNX
-        aws_secret_key: anEANmVQpA8wePVPRyVb1W+1jwXRhQM9VtAT7xsQ
+        aws-access-key-id: ASIA3XF7UZAYSIZBPYNX
+        aws-secret-access-key: anEANmVQpA8wePVPRyVb1W+1jwXRhQM9VtAT7xsQ
         version_label: "v${{ github.run_id }}"    # Rótulo da versão do deploy
         region: us-east-1
     - name: Create ZIP file
