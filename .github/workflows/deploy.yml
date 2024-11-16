@@ -32,6 +32,5 @@ jobs:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         version_label: "v${{ github.run_id }}"    # Rótulo da versão do deploy
-        zip_file: "backend.zip"                   # Nome do arquivo compactado
     - name: Create ZIP file
       run: zip -r backend.zip dist package.json package-lock.json
