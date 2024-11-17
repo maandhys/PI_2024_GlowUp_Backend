@@ -20,11 +20,14 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
+        role-skip-session-tagging: true
+        audience: sts.amazonaws.com.cn
+        aws-region: us-east-1
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+        
 
     - name: Zip application
       run: zip -r application.zip .
