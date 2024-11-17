@@ -3,7 +3,7 @@ name: Deploy to Elastic Beanstalk
 on:
   push:
     branches:
-      - master  # Substitua pela branch que dispara o deploy    
+      - main  # Substitua pela branch que dispara o deploy    
       
 permissions:
   id-token: write   # This is required for requesting the JWT
