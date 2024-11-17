@@ -33,10 +33,10 @@ jobs:
     - name: Upload to Elastic Beanstalk
       run: |
         aws elasticbeanstalk create-application-version \
-          --application-name "glowupbackend" \
+          --application-name "Glowup" \
           --version-label "v-${{ github.run_id }}" \
           --source-bundle S3Bucket="elasticbeanstalk-us-east-1-805708286001",S3Key="application.zip"
         aws elasticbeanstalk update-environment \
-          --application-name "glowupbackend" \
-          --environment-name "glowupbackend-prod" \
+          --application-name "Glowup" \
+          --environment-name "Glowup-env" \
           --version-label "v-${{ github.run_id }}"
