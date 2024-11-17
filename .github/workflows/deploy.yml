@@ -1,0 +1,44 @@
+name: Deploy to Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - master  # Substitua pela branch que dispara o deploy    
+      
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: write  
+env:
+  ACTIONS_STEP_DEBUG: true
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-skip-session-tagging: true
+        audience: sts.amazonaws.com.cn
+        aws-region: us-east-1
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        
+
+    - name: Zip application
+      run: zip -r application.zip .
+
+    - name: Upload to Elastic Beanstalk
+      run: |
+        aws elasticbeanstalk create-application-version \
+          --application-name "glowupbackend" \
+          --version-label "v-${{ github.run_id }}" \
+          --source-bundle S3Bucket="elasticbeanstalk-us-east-1-805708286001",S3Key="application.zip"
+        aws elasticbeanstalk update-environment \
+          --application-name "glowupbackend" \
+          --environment-name "glowupbackend-prod" \
+          --version-label "v-${{ github.run_id }}"
